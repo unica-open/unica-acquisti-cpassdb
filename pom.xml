@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>it.csi.cpass</groupId>
+  <artifactId>cpassdb</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+
+  <name>CPASS DataBase</name>
+  <description>Produce un archivio TAR contenente gli script di adeguamento del DB</description>
+  <inceptionYear>2019</inceptionYear>
+  <organization>
+    <name>CSI Piemonte</name>
+    <url>https://www.csipiemonte.it</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>EUPL 1.2</name>
+      <url>https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/2020-03/EUPL-1.2%20EN.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <properties>
+    <revision>1.0.0</revision>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Compiler configuration -->
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+
+    <!-- Configuration for the remote repository -->
+    <repository.url>http://repart.csi.it/artifactory/maven2</repository.url>
+
+    <!-- Plugin configuration -->
+    <plugin.version.assembly>3.3.0</plugin.version.assembly>
+    <plugin.version.build-helper>3.1.0</plugin.version.build-helper>
+    <plugin.version.license>2.0.0</plugin.version.license>
+  </properties>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>maven2</name>
+      <url>${repository.url}</url>
+    </repository>
+    <repository>
+      <snapshots></snapshots>
+      <id>snapshots</id>
+      <name>maven2</name>
+      <url>${repository.url}</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>maven2</name>
+      <url>${repository.url}</url>
+    </pluginRepository>
+    <pluginRepository>
+      <snapshots></snapshots>
+      <id>snapshots</id>
+      <name>maven2</name>
+      <url>${repository.url}</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <build>
+    <finalName>cpassdb</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>${plugin.version.assembly}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${plugin.version.license}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${plugin.version.build-helper}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>distro-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>src/assembly/distribution.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <profiles>
+    <profile>
+      <id>dev-int-01</id>
+      <properties>
+        <build.profile.id>dev-int-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>dev-cmto-01</id>
+      <properties>
+        <build.profile.id>dev-cmto-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>dev-rp-01</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <build.profile.id>dev-rp-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>test-cmto-01</id>
+      <properties>
+        <build.profile.id>test-cmto-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>test-int-01</id>
+      <properties>
+        <build.profile.id>test-int-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>test-rp-01</id>
+      <properties>
+        <build.profile.id>test-rp-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod-cmto-01</id>
+      <properties>
+        <build.profile.id>prod-cmto-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod-int-01</id>
+      <properties>
+        <build.profile.id>prod-int-01</build.profile.id>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod-rp-01</id>
+      <properties>
+        <build.profile.id>prod-rp-01</build.profile.id>
+      </properties>
+    </profile>
+    <!-- Invoke via ./mvnw clean package -P add-license -->
+    <profile>
+      <id>add-license</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <build.profile.id>dev-rp-01</build.profile.id>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>rootlocation</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>rootlocation</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>add-licenses</id>
+                <goals>
+                  <goal>update-file-header</goal>
+                </goals>
+                <phase>process-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+              <canUpdateLicense>false</canUpdateLicense>
+              <licenseName>eupl-1.2</licenseName>
+              <licenseResolver>file:///${rootlocation}/docs/license</licenseResolver>
+              <processStartTag>========================LICENSE_START=================================</processStartTag>
+              <processEndTag>=========================LICENSE_END==================================</processEndTag>
+              <roots>
+                <root>src</root>
+                <root>dist</root>
+                <root>profiles</root>
+              </roots>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+
+</project>

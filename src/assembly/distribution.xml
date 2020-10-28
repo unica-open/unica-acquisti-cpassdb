@@ -1,0 +1,40 @@
+<!--
+  ========================LICENSE_START=================================
+  CPASS DataBase
+  %%
+  Copyright (C) 2019 - 2020 CSI Piemonte
+  %%
+  SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+  SPDX-License-Identifier: EUPL-1.2
+  =========================LICENSE_END==================================
+  -->
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+  <id>${project.version}</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <!-- delta.sql file, obtained by joining the delta.sql file in /dist/<version> and the profile-named SQL file -->
+  <files>
+    <file>
+      <sources>
+        <source>${project.basedir}/dist/${project.version}/delta.sql</source>
+        <source>${project.basedir}/dist/${project.version}/${build.profile.id}.sql</source>
+      </sources>
+      <destName>delta.sql</destName>
+      <outputDirectory>/incr</outputDirectory>
+    </file>
+  </files>
+  <!-- all.sql file, in a directory of its own -->
+  <fileSets>
+    <fileSet>
+      <directory>${project.basedir}/dist/${project.version}</directory>
+      <includes>
+        <include>all.sql</include>
+      </includes>
+      <outputDirectory>/all</outputDirectory>
+    </fileSet>
+  </fileSets>
+
+</assembly>

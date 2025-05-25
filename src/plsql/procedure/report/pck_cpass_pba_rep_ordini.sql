@@ -2,9 +2,9 @@
 -- ========================LICENSE_START=================================
 -- CPASS DataBase
 -- %%
--- Copyright (C) 2019 - 2020 CSI Piemonte
+-- Copyright (C) 2019 - 2025 CSI Piemonte
 -- %%
--- SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+-- SPDX-FileCopyrightText: Copyright 2019 - 2025 | CSI Piemonte
 -- SPDX-License-Identifier: EUPL-1.2
 -- =========================LICENSE_END==================================
 ---
@@ -160,7 +160,7 @@ join  CPASS_D_OGGETTI_SPESA oggSp on rigaOrd.oggetti_spesa_id = oggSp.oggetti_sp
 LEFT JOIN CPASS_T_LISTINO_FORNITORE lisForn on  rigaOrd.oggetti_spesa_id = lisForn.oggetti_spesa_id and tord.fornitore_id = lisForn.fornitore_id
 join CPASS_D_UNITA_MISURA unita on  unita.unita_misura_id = rigaOrd.unita_misura_id
 join CPASS_T_UTENTE utente on tord.utente_compilatore_id = utente.utente_id
-left join CPASS_R_DIRIGENTE_SETTORE dirigente on sett.settore_id = dirigente.settore_id
+left join CPASS_R_DIRIGENTE_SETTORE dirigente on sett.settore_id = dirigente.settore_id and dirigente.data_validita_fine is null
 left join CPASS_T_UTENTE utenteDir on dirigente.utente_id = utenteDir.utente_id
 join CPASS_D_ALIQUOTE_IVA iva on rigaOrd.aliquote_iva_id = iva.aliquote_iva_id
 --where tord.testata_ordine_id = '87654aed-9fb7-5c97-b8d5-a1dd5cba33ce'

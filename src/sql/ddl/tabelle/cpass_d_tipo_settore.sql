@@ -2,9 +2,9 @@
 -- ========================LICENSE_START=================================
 -- CPASS DataBase
 -- %%
--- Copyright (C) 2019 - 2020 CSI Piemonte
+-- Copyright (C) 2019 - 2025 CSI Piemonte
 -- %%
--- SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+-- SPDX-FileCopyrightText: Copyright 2019 - 2025 | CSI Piemonte
 -- SPDX-License-Identifier: EUPL-1.2
 -- =========================LICENSE_END==================================
 ---
@@ -37,7 +37,15 @@ SET default_with_oids = false;
 CREATE TABLE cpass.cpass_d_tipo_settore (
     tipo_settore_id integer NOT NULL,
     tipo_settore_codice character varying(50) NOT NULL,
-    tipo_settore_descrizione character varying(500) NOT NULL
+    tipo_settore_descrizione character varying(500) NOT NULL,
+	flag_direzione BOOLEAN DEFAULT false NOT NULL,
+	flag_utilizzabile BOOLEAN DEFAULT false NOT NULL,
+	ente_id UUID NOT NULL,
+  CONSTRAINT fk_cpass_d_tipo_settore_t_ente FOREIGN KEY (ente_id)
+    REFERENCES cpass.cpass_t_ente(ente_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
 );
 
 

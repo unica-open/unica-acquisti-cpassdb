@@ -2,9 +2,9 @@
 -- ========================LICENSE_START=================================
 -- CPASS DataBase
 -- %%
--- Copyright (C) 2019 - 2020 CSI Piemonte
+-- Copyright (C) 2019 - 2025 CSI Piemonte
 -- %%
--- SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+-- SPDX-FileCopyrightText: Copyright 2019 - 2025 | CSI Piemonte
 -- SPDX-License-Identifier: EUPL-1.2
 -- =========================LICENSE_END==================================
 ---
@@ -44,6 +44,7 @@ CREATE TABLE cpass.cpass_t_ord_testata_ordine (
   ufficio_id INTEGER ,
   stato_id INTEGER,
   note VARCHAR(4000),
+  tipo_acquisto_id INTEGER,
   data_scadenza TIMESTAMP WITHOUT TIME ZONE,
   data_creazione TIMESTAMP WITHOUT TIME ZONE DEFAULT now() NOT NULL,
   utente_creazione VARCHAR(250) NOT NULL,
@@ -71,3 +72,5 @@ ALTER TABLE  cpass.cpass_t_ord_testata_ordine ADD CONSTRAINT fk_cpass_t_ord_test
 ALTER TABLE  cpass.cpass_t_ord_testata_ordine ADD CONSTRAINT cpass_t_ord_testata_ordine_anno_numero_settore_unique UNIQUE (ordine_anno,ordine_numero,settore_emittente_id);
 
 ALTER TABLE ONLY cpass.cpass_t_ord_testata_ordine ADD CONSTRAINT fk_cpass_t_ord_testata_ordine_t_utente FOREIGN KEY (utente_compilatore_id) REFERENCES cpass.cpass_t_utente (utente_id) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE cpass.cpass_t_ord_testata_ordine ADD CONSTRAINT cpass_t_ord_tipo_acquisto_fk FOREIGN KEY (tipo_acquisto_id) REFERENCES cpass.cpass_d_pba_settore_interventi (settore_interventi_id);

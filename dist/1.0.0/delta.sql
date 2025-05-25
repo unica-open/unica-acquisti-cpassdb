@@ -2,9 +2,9 @@
 -- ========================LICENSE_START=================================
 -- CPASS DataBase
 -- %%
--- Copyright (C) 2019 - 2020 CSI Piemonte
+-- Copyright (C) 2019 - 2025 CSI Piemonte
 -- %%
--- SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+-- SPDX-FileCopyrightText: Copyright 2019 - 2025 | CSI Piemonte
 -- SPDX-License-Identifier: EUPL-1.2
 -- =========================LICENSE_END==================================
 ---
@@ -209,7 +209,7 @@ WITH (oids = false);
 ALTER TABLE IF EXISTS cpass.cpass_r_utente_settore DROP CONSTRAINT IF EXISTS idx_utente_settore;
 
 
-ALTER TABLE cpass_r_utente_settore
+ALTER TABLE cpass.cpass_r_utente_settore
 ADD CONSTRAINT  idx_utente_settore
 UNIQUE  (utente_id,settore_id);
 
@@ -276,10 +276,10 @@ ALTER TABLE cpass.cpass_t_pba_intervento  DROP COLUMN if exists intervento_ricom
 ALTER TABLE IF EXISTS cpass.cpass_t_pba_intervento ADD COLUMN IF NOT EXISTS intervento_ricompreso_cui varchar(21);
 
 ALTER TABLE IF EXISTS cpass.cpass_t_metadati_funzione ADD COLUMN IF NOT EXISTS ordinamento_layout INTEGER;
-delete from cpass_t_metadati_funzione;
-ALTER SEQUENCE cpass_t_metadati_funzione_metadati_funzione_id_seq RESTART WITH 1;
+delete from cpass.cpass_t_metadati_funzione;
+ALTER SEQUENCE cpass.cpass_t_metadati_funzione_metadati_funzione_id_seq RESTART WITH 1;
 
-update cpass_t_pba_intervento set settore_id = 'a2f1eaa7-17dd-59db-ad27-d57db6dc0175' where settore_id is null;
+update cpass.cpass_t_pba_intervento set settore_id = 'a2f1eaa7-17dd-59db-ad27-d57db6dc0175' where settore_id is null;
 ALTER TABLE cpass.cpass_t_pba_intervento  ALTER COLUMN settore_id SET NOT NULL;
 ALTER TABLE IF EXISTS cpass.cpass_t_pba_intervento DROP CONSTRAINT IF EXISTS fk_cpass_t_pba_intervento_settore;
 ALTER TABLE IF EXISTS cpass.cpass_t_pba_intervento          ADD CONSTRAINT   fk_cpass_t_pba_intervento_settore FOREIGN KEY (settore_id) REFERENCES cpass.cpass_t_settore(settore_id) ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -550,7 +550,7 @@ WHERE NOT EXISTS (
 );
 
 
-update cpass_d_ruolo set
+update cpass.cpass_d_ruolo set
 ruolo_codice = 'COMPILATORE'
 ,ruolo_descrizione = 'COMPILATORE'
 WHERE
@@ -575,7 +575,7 @@ WHERE NOT EXISTS (
   ds.ruolo_codice = tmp.ruolo_codice
 );
 
-INSERT INTO cpass_r_ruolo_modulo (ruolo_id, modulo_id)
+INSERT INTO cpass.cpass_r_ruolo_modulo (ruolo_id, modulo_id)
 SELECT dr.ruolo_id, dm.modulo_id
 FROM (VALUES
 	('RUO', 'PBA')
@@ -609,19 +609,13 @@ WHERE NOT EXISTS (
 
 --select *from cpass_d_ruolo
 
-
-
-
-
-
-
-update cpass_d_permesso SET
+update cpass.cpass_d_permesso SET
 permesso_codice = 'VALIDA_INTERVENTO'
 ,permesso_descrizione = 'funzione validazione intervento'
 where
 permesso_codice = 'APP_INTERVENTO';
 
-update cpass_d_permesso SET
+update cpass.cpass_d_permesso SET
 permesso_codice = 'CONF_PROGRAMMA'
 ,permesso_descrizione = 'funzione di conferma programma'
 where
@@ -749,56 +743,56 @@ WHERE NOT EXISTS (
 );
 
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'VALIDATO'
 ,stato_descrizione = 'VALIDATO'
 where
 stato_codice = 'APPROVATO'
 AND stato_tipo = 'INTERVENTO';
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'CONFERMATO'
 ,stato_descrizione = 'CONFERMATO'
 where
 stato_codice = 'APPROVATO'
 AND stato_tipo = 'PROGRAMMA';
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'CANCELLATO'
 ,stato_descrizione = 'CANCELLATO'
 where
 stato_codice = 'ANNULLATO'
 AND stato_tipo = 'PROGRAMMA';
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'CANCELLATO'
 ,stato_descrizione = 'CANCELLATO'
 where
 stato_codice = 'ANNULLATO'
 AND stato_tipo = 'INTERVENTO';
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'VALIDATO'
 ,stato_descrizione = 'VALIDATO'
 where
 stato_codice = 'APPROVATO'
 AND stato_tipo = 'INTERVENTO';
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'CONFERMATO'
 ,stato_descrizione = 'CONFERMATO'
 where
 stato_codice = 'APPROVATO'
 AND stato_tipo = 'PROGRAMMA';
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'CANCELLATO'
 ,stato_descrizione = 'CANCELLATO'
 where
 stato_codice = 'ANNULLATO'
 AND stato_tipo = 'PROGRAMMA';
 
-update CPASS_D_STATO set
+update cpass.CPASS_D_STATO set
 stato_codice      = 'CANCELLATO'
 ,stato_descrizione = 'CANCELLATO'
 where
@@ -830,8 +824,8 @@ WHERE NOT EXISTS (
   WHERE ds.tipo_acquisto_codice = tmp.tipo_acquisto_codice
 );
 
-update CPASS_D_ORD_TIPO_ORDINE set flag_trasm_nso = true where tipologia_documento_codice in ('SEM');
-update CPASS_D_ORD_TIPO_ORDINE set flag_trasm_nso = false where tipologia_documento_codice in ('INT');
+update cpass.CPASS_D_ORD_TIPO_ORDINE set flag_trasm_nso = true where tipologia_documento_codice in ('SEM');
+update cpass.CPASS_D_ORD_TIPO_ORDINE set flag_trasm_nso = false where tipologia_documento_codice in ('INT');
 
 -- parametro "tolleranza evasione"
 INSERT INTO cpass.cpass_t_parametro (chiave, valore, abilitata, riferimento, ambiente, note)
@@ -905,14 +899,14 @@ WHERE NOT EXISTS (
 	AND rrp.permesso_id = dp.permesso_id
 );
 
-update  cpass_t_parametro_stampa set procedure_utilizzate = 'pck_cpass_pba_rep_allegato_ii'
+update  cpass.cpass_t_parametro_stampa set procedure_utilizzate = 'pck_cpass_pba_rep_allegato_ii'
 where nome_stampa = 'ALLEGATO_II';
 
-update  cpass_t_parametro_stampa set procedure_utilizzate = 'pck_cpass_pba_rep_ordini'
+update  cpass.cpass_t_parametro_stampa set procedure_utilizzate = 'pck_cpass_pba_rep_ordini'
 where nome_stampa = 'PRT_T_ORD';
 
-delete from cpass_t_parametro_stampa where nome_stampa = 'STAMPA_INTERVENTI';
-INSERT INTO cpass_t_parametro_stampa (modulo, nome_stampa, file_name_template, parametro, parametro_tipo, ordinamento, procedure_utilizzate, note, formato_stampa)
+delete from cpass.cpass_t_parametro_stampa where nome_stampa = 'STAMPA_INTERVENTI';
+INSERT INTO cpass.cpass_t_parametro_stampa (modulo, nome_stampa, file_name_template, parametro, parametro_tipo, ordinamento, procedure_utilizzate, note, formato_stampa)
 SELECT tmp.modulo, tmp.nome_stampa, tmp.file_name_template, tmp.parametro, tmp.parametro_tipo, tmp.ordinamento, tmp.procedure_utilizzate, tmp.note, tmp.formato_stampa
 FROM (VALUES
      ('PBA', 'STAMPA_INTERVENTI', 'Stampa_acquisti.rptdesign', 'p_programma_id', 	'varchar', 1, 'pck_cpass_pba_rep_interventi_risorse', NULL, 'xlsx')
@@ -953,8 +947,8 @@ WHERE NOT EXISTS (
 	WHERE ds.permesso_codice = tmp.codice
     );
 
-delete from cpass_r_ruolo_permesso where permesso_id in (select permesso_id from cpass_d_permesso cdp where permesso_titolo_box ='INTERVENTI');
-delete from cpass_d_permesso where permesso_codice in ('VALIDA_INTERVENTO', 'RIFIUTA_INTERVENTO', 'VOLTURA_INTERVENTO');
+delete from cpass.cpass_r_ruolo_permesso where permesso_id in (select permesso_id from cpass_d_permesso cdp where permesso_titolo_box ='INTERVENTI');
+delete from cpass.cpass_d_permesso where permesso_codice in ('VALIDA_INTERVENTO', 'RIFIUTA_INTERVENTO', 'VOLTURA_INTERVENTO');
 
 INSERT INTO cpass.cpass_r_ruolo_permesso (ruolo_id, permesso_id)
 SELECT dr.ruolo_id, dp.permesso_id
@@ -1029,8 +1023,8 @@ WHERE NOT EXISTS (
 );
 
 
-delete from cpass_r_ruolo_permesso where permesso_id in (select permesso_id from cpass_d_permesso cdp where permesso_titolo_box ='PROGRAMMA');
-INSERT INTO cpass.cpass_r_ruolo_permesso (ruolo_id, permesso_id)
+delete from cpass.cpass_r_ruolo_permesso where permesso_id in (select permesso_id from cpass_d_permesso cdp where permesso_titolo_box ='PROGRAMMA');
+INSERT INTO cpass.cpass.cpass_r_ruolo_permesso (ruolo_id, permesso_id)
 SELECT dr.ruolo_id, dp.permesso_id
 FROM (values
 ('REFP','INS_PROGRAMMA')
@@ -1077,7 +1071,7 @@ WHERE NOT EXISTS (
 	FROM cpass.cpass_d_ruolo dr
 	WHERE dr.ruolo_codice = tmp.codice
 );
-INSERT INTO cpass_r_ruolo_modulo (ruolo_id, modulo_id)
+INSERT INTO cpass.cpass_r_ruolo_modulo (ruolo_id, modulo_id)
 SELECT dr.ruolo_id, dm.modulo_id
 FROM (VALUES
 	('CHIUSURA_ORDINI', 'ORD')

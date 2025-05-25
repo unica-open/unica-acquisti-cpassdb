@@ -1,0 +1,11 @@
+---
+-- ========================LICENSE_START=================================
+-- CPASS DataBase
+-- %%
+-- Copyright (C) 2019 - 2025 CSI Piemonte
+-- %%
+-- SPDX-FileCopyrightText: Copyright 2019 - 2025 | CSI Piemonte
+-- SPDX-License-Identifier: EUPL-1.2
+-- =========================LICENSE_END==================================
+-- PROD-RP-01
+

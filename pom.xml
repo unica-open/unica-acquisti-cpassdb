@@ -24,7 +24,7 @@
   </licenses>
 
   <properties>
-    <revision>1.0.0</revision>
+    <revision>2.1.0</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Compiler configuration -->
     <maven.compiler.target>11</maven.compiler.target>
@@ -120,9 +120,9 @@
 
   <profiles>
     <profile>
-      <id>dev-int-01</id>
+      <id>dev-mult-01</id>
       <properties>
-        <build.profile.id>dev-int-01</build.profile.id>
+        <build.profile.id>dev-mult-01</build.profile.id>
       </properties>
     </profile>
     <profile>
@@ -147,9 +147,9 @@
       </properties>
     </profile>
     <profile>
-      <id>test-int-01</id>
+      <id>test-mult-01</id>
       <properties>
-        <build.profile.id>test-int-01</build.profile.id>
+        <build.profile.id>test-mult-01</build.profile.id>
       </properties>
     </profile>
     <profile>
@@ -165,9 +165,9 @@
       </properties>
     </profile>
     <profile>
-      <id>prod-int-01</id>
+      <id>prod-mult-01</id>
       <properties>
-        <build.profile.id>prod-int-01</build.profile.id>
+        <build.profile.id>prod-mult-01</build.profile.id>
       </properties>
     </profile>
     <profile>

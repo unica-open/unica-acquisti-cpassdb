@@ -2,9 +2,9 @@
 -- ========================LICENSE_START=================================
 -- CPASS DataBase
 -- %%
--- Copyright (C) 2019 - 2020 CSI Piemonte
+-- Copyright (C) 2019 - 2025 CSI Piemonte
 -- %%
--- SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+-- SPDX-FileCopyrightText: Copyright 2019 - 2025 | CSI Piemonte
 -- SPDX-License-Identifier: EUPL-1.2
 -- =========================LICENSE_END==================================
 ---
@@ -345,12 +345,12 @@ WHERE NOT EXISTS (
 INSERT INTO cpass.cpass_t_parametro (parametro_id, chiave, valore, abilitata, riferimento, ambiente, note)
 SELECT tmp.parametro_id, tmp.chiave, tmp.valore, tmp.abilitata, tmp.riferimento, tmp.ambiente, tmp.note
 FROM (VALUES
-	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_USERNAME', 'Piemonte', true, '', 'MIT', 'Per trasmissione programma al MIT'),
-	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_PASSWORD', 'Pem735nte1', true, '', 'MIT', 'Per trasmissione programma al MIT'),
-	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_CLIENT_KEY', 'Pem735nte1', true, '', 'MIT', 'Per trasmissione programma al MIT'),
-	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_CLIENT_ID', 'PiemonteApp', true, '', 'MIT', 'Per trasmissione programma al MIT'),
-	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_URL_WSLOGIN', 'http://185.80.93.77/WSLoginCollaudo/rest', true, '', 'MIT', 'Per trasmissione programma al MIT'),
-	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_URL_WSPROGRAMMI', 'http://185.80.93.77/WSProgrammiCollaudo/rest', true, '', 'MIT', 'Per trasmissione programma al MIT')
+	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_USERNAME', @Value@, true, '', 'MIT', 'Per trasmissione programma al MIT'),
+	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_PASSWORD', @Value@, true, '', 'MIT', 'Per trasmissione programma al MIT'),
+	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_CLIENT_KEY', @Value@, true, '', 'MIT', 'Per trasmissione programma al MIT'),
+	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_CLIENT_ID', @Value@, true, '', 'MIT', 'Per trasmissione programma al MIT'),
+	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_URL_WSLOGIN', @Value@, true, '', 'MIT', 'Per trasmissione programma al MIT'),
+	( (select nextval('cpass.cpass_t_parametro_parametro_id_seq')), 'MIT_URL_WSPROGRAMMI', @Value@, true, '', 'MIT', 'Per trasmissione programma al MIT')
 ) AS tmp(parametro_id, chiave, valore, abilitata, riferimento, ambiente, note)
 WHERE NOT EXISTS (
 	SELECT 1

@@ -2,14 +2,14 @@
 -- ========================LICENSE_START=================================
 -- CPASS DataBase
 -- %%
--- Copyright (C) 2019 - 2020 CSI Piemonte
+-- Copyright (C) 2019 - 2021 CSI Piemonte
 -- %%
--- SPDX-FileCopyrightText: Copyright 2019 - 2020 | CSI Piemonte
+-- SPDX-FileCopyrightText: Copyright 2019 - 2021 | CSI Piemonte
 -- SPDX-License-Identifier: EUPL-1.2
 -- =========================LICENSE_END==================================
 ---
 CREATE OR REPLACE FUNCTION cpass.pck_cpass_pba_rep_interventi_risorse(p_programma_id character varying, p_cup character varying, p_settore_interventi character varying, p_struttura_id character varying, p_cpv_id character varying, p_cognome character varying, p_descri character varying, p_order character varying)
- RETURNS TABLE(id_allegato_scheda integer, intervento_cui character varying, intervento_anno_avvio integer, intervento_cup character varying, intervento_stato character varying, ricompreso_tipo_codice character varying, ricompreso_tipo_descrizione character varying, intervento_lotto_funzionale boolean, nuts_codice character varying, nuts_descrizione character varying, settore_interventi_codice character varying, settore_interventi_descrizione character varying, cpv_codice character varying, cpv_descrizione character varying, intervento_descrizione_acquisto character varying, priorita_codice character varying, priorita_descrizione character varying, utente_nome character varying, utente_cognome character varying, utente_codice_fiscale character varying, intervento_durata_mesi integer, intervento_nuovo_affid boolean, ausa character varying, ausa_descrizione character varying, acquisto_variato_codice character varying, acquisto_variato_descrizione character varying, programma_id uuid, programma_anno integer, ente_id uuid, ente_codice_fiscale character varying, ente_denominazione character varying, importo_anno_primo numeric, importo_anno_secondo numeric, importo_anni_successivi numeric, totale_importi numeric, risorsa character varying, tipologia character varying)
+ RETURNS TABLE(id_allegato_scheda integer, intervento_cui character varying, intervento_anno_avvio integer, intervento_cup character varying, intervento_stato character varying, ricompreso_tipo_codice character varying, ricompreso_tipo_descrizione character varying, intervento_lotto_funzionale boolean, nuts_codice character varying, nuts_descrizione character varying, settore_interventi_codice character varying, settore_interventi_descrizione character varying, cpv_codice character varying, cpv_descrizione character varying, intervento_descrizione_acquisto character varying, priorita_codice character varying, priorita_descrizione character varying, utente_nome character varying, utente_cognome character varying, utente_codice_fiscale character varying, intervento_durata_mesi integer, intervento_nuovo_affid boolean, ausa character varying, ausa_descrizione character varying, acquisto_variato_codice character varying, acquisto_variato_descrizione character varying, programma_id uuid, programma_anno integer, ente_id uuid, ente_codice_fiscale character varying, ente_denominazione character varying, importo_anno_primo numeric, importo_anno_secondo numeric, importo_anni_successivi numeric, totale_importi numeric, risorsa character varying, tipologia character varying, settore_codice character varying, settore_descrizione character varying, motivazione_non_riproposto character varying)
  LANGUAGE plpgsql
 AS $function$
 DECLARE
@@ -55,8 +55,8 @@ WITH  importi_cap_privati AS (
         ,intervento.intervento_anno_avvio
         ,intervento.intervento_cup
         , stato.stato_codice
-        ,rt.ricompreso_tipo_descrizione ricompreso_tipo_codice
-        ,intervento.intervento_ricompreso_cui ricompreso_tipo_descrizione
+        ,rt.ricompreso_tipo_codice
+        ,rt.ricompreso_tipo_descrizione
         ,intervento.intervento_lotto_funzionale
         ,nuts.nuts_codice
         ,nuts.nuts_descrizione
@@ -87,13 +87,17 @@ WITH  importi_cap_privati AS (
         ,importi_cap_privati.cap_privati_totale_importi totale_importi
         ,risorsa.risorsa_descrizione 
         ,risorsa.risorsa_tipo            
+        ,settore.settore_codice
+        ,settore.settore_descrizione
+        ,intervento.motivazione_non_riproposto
     FROM cpass_t_pba_intervento intervento
        JOIN cpass_d_stato stato ON intervento.stato_id = stato.stato_id and stato.stato_tipo = ''INTERVENTO''
        JOIN cpass_d_pba_nuts nuts ON intervento.nuts_id = nuts.nuts_id
        JOIN cpass_d_pba_priorita priorita ON intervento.priorita_id = priorita.priorita_id
        JOIN cpass_d_pba_settore_interventi si ON intervento.settore_interventi_id = si.settore_interventi_id
        JOIN cpass_d_cpv cpv ON intervento.cpv_id = cpv.cpv_id
-       JOIN cpass_t_utente ute ON intervento.utente_rup_id = ute.utente_id
+       JOIN cpass_t_utente ute ON intervento.utente_rup_id = ute.utente_id       
+       JOIN cpass_t_settore settore ON intervento.settore_id = settore.settore_id       
        LEFT JOIN cpass_d_pba_acquisto_variato av ON intervento.acquisto_variato_id =av.acquisto_variato_id
        LEFT JOIN cpass_d_pba_ricompreso_tipo rt ON intervento.ricompreso_tipo_id = rt.ricompreso_tipo_id
        LEFT JOIN cpass_d_pba_ausa ausa ON intervento.ausa_id = ausa.ausa_id
@@ -106,15 +110,13 @@ WITH  importi_cap_privati AS (
            stringa_sql := stringa_sql || ' and programma.programma_id = $1::UUID ';             
      end if;
    
-     if p_cup <>  'null' AND p_cup <> '' and p_cup IS NOT NULL  then  
+     if p_cup <>  'null' and p_cup <>  '' and p_cup IS NOT NULL then  
         stringa_sql := stringa_sql || ' and intervento.intervento_cup = $2  ';
      end if;
      if p_settore_interventi <>  'null' and p_settore_interventi <>  '' and p_settore_interventi IS NOT NULL then 
        stringa_sql := stringa_sql || ' and intervento.settore_interventi_id = $3::INTEGER ';   
      end if;
 
-       
-  
     if p_struttura_id <>  'null' AND p_struttura_id <> '' and p_struttura_id IS NOT NULL  then      
        stringa_sql := stringa_sql || ' and intervento.settore_id = $4::UUID '; 
      end if;
